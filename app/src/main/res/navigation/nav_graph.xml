@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/main_fragment">
+
+    <fragment
+        android:id="@+id/main_fragment"
+        android:label="Main Fragment"
+        android:name="com.example.chordtrain.ui.MainFragment">
+
+        <action
+            android:id="@+id/action_main_to_play"
+            app:destination="@id/play_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/play_fragment"
+        android:label="Play Fragment"
+        android:name="com.example.chordtrain.ui.PlayFragment" />
+
+</navigation>
