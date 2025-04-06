@@ -1,4 +1,4 @@
-package com.example.chordtrain
+package com.example.chordtrain.db
 
 import android.content.Context
 import androidx.room.Database

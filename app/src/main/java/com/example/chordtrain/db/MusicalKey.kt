@@ -1,4 +1,4 @@
-package com.example.chordtrain
+package com.example.chordtrain.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

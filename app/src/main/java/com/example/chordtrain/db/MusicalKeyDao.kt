@@ -1,4 +1,4 @@
-package com.example.chordtrain
+package com.example.chordtrain.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
