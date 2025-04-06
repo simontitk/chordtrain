@@ -4,6 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.chordtrain.db.ChordTrainDatabase
+import com.example.chordtrain.db.MusicalKey
+import com.example.chordtrain.db.MusicalKeyDao
 
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
