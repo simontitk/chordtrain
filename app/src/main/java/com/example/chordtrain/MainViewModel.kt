@@ -14,10 +14,13 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     private val musicalKeyDao: MusicalKeyDao
     val allMusicalKeys: LiveData<List<MusicalKey>>
     val selectedLength = MutableLiveData<Int>(1)
+    val selectedDifficulty = MutableLiveData<String>("Easy")
+    val selectedMusicalKey: MutableLiveData<String>
 
     init {
         val database = ChordTrainDatabase.getDatabase(application)
         musicalKeyDao = database.musicalKeyDao()
         allMusicalKeys = musicalKeyDao.getAllMusicalKey()
+        selectedMusicalKey = MutableLiveData(allMusicalKeys.value?.get(0)?.name ?: "C major")
     }
 }

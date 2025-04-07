@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.RadioGroup
@@ -38,6 +39,16 @@ class MainFragment: Fragment() {
             keySpinner.adapter = adapter
         }
 
+        keySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View?, position: Int, id: Long) {
+                val selectedMusicalKey = parentView.getItemAtPosition(position) as String
+                viewModel.selectedMusicalKey.value = selectedMusicalKey
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
         val difficultySpinner: Spinner = view.findViewById(R.id.difficulty_spinner)
         val difficultyAdapter = ArrayAdapter(
             requireContext(),
@@ -46,6 +57,16 @@ class MainFragment: Fragment() {
         )
         difficultyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         difficultySpinner.adapter = difficultyAdapter
+
+        difficultySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View?, position: Int, id: Long) {
+                val selectedDifficulty = parentView.getItemAtPosition(position) as String
+                viewModel.selectedDifficulty.value =selectedDifficulty
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
 
 
         val lengthRadioGroup: RadioGroup = view.findViewById(R.id.length_radiogroup)
