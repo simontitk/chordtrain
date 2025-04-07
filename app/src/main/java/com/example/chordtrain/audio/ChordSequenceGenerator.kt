@@ -4,57 +4,57 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.annotation.RawRes
-import com.example.chordtrain.R
 import com.example.chordtrain.db.MusicalKey
 
 
-class ChordSequenceGenerator(private val context: Context, private val difficulty:String, private val key:MusicalKey, private val length:Int) {
-
-
+class ChordSequenceGenerator(
+    private val context: Context,
+    private val musicalKey: MusicalKey,
+    private val difficulty: String,
+    private val sequenceLength: Int
+) {
 
     private fun rawResourceUri(@RawRes resId: Int): Uri {
         return Uri.parse("android.resource://${context.packageName}/$resId")
     }
 
 
-    private fun getPath(thing: String): Int {
-        val normalized = thing
+    private fun getChordId(chordName: String): Int {
+        val normalizedChordName = chordName
             .lowercase()
             .replace(" ", "_")
             .replace("#", "_sharp")
 
-        val id = context.resources.getIdentifier(normalized, "raw", context.packageName)
+        val id = context.resources.getIdentifier(normalizedChordName, "raw", context.packageName)
 
         if (id == 0) {
-            Log.e("ChordDebug", "Resource not found after normalization: $normalized")
+            Log.e("ChordDebug", "Resource not found after normalization: $normalizedChordName")
         }
         return id
     }
 
 
     fun getChordSequence(): List<Uri> {
-        val chords = mutableListOf(key.chord1, key.chord4, key.chord5)
+        val chordNames = mutableListOf(musicalKey.chord1, musicalKey.chord4, musicalKey.chord5)
 
         if (difficulty == "Medium") {
-            chords.add(key.chord6)
-            chords.add(key.chord3)
+            chordNames.add(musicalKey.chord6)
+            chordNames.add(musicalKey.chord2)
         }
 
         if (difficulty == "Hard") {
-            chords.add(key.chord6)
-            chords.add(key.chord3)
-            chords.add(key.chord7)
-            chords.add(key.chord2)
+            chordNames.add(musicalKey.chord6)
+            chordNames.add(musicalKey.chord2)
+            chordNames.add(musicalKey.chord3)
+            chordNames.add(musicalKey.chord7)
         }
 
         val randomChords: MutableList<String> = mutableListOf()
 
-        for (i in 1..length) {
-            randomChords.add(chords.random())
+        for (i in 1..sequenceLength) {
+            randomChords.add(chordNames.random())
         }
 
-        return randomChords.map { rawResourceUri(getPath(it)) }
-
-
+        return randomChords.map { rawResourceUri(getChordId(it)) }
     }
 }
