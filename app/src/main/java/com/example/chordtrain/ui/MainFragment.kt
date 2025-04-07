@@ -42,7 +42,8 @@ class MainFragment: Fragment() {
         keySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View?, position: Int, id: Long) {
                 val selectedMusicalKey = parentView.getItemAtPosition(position) as String
-                viewModel.selectedMusicalKey.value = selectedMusicalKey
+                val musicalKey = viewModel.allMusicalKeys.value?.find { it.name == selectedMusicalKey }
+                viewModel.selectedMusicalKey.value = musicalKey
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 TODO("Not yet implemented")

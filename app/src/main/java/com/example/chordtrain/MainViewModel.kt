@@ -15,12 +15,12 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     val allMusicalKeys: LiveData<List<MusicalKey>>
     val selectedLength = MutableLiveData<Int>(1)
     val selectedDifficulty = MutableLiveData<String>("Easy")
-    val selectedMusicalKey: MutableLiveData<String>
+    val selectedMusicalKey: MutableLiveData<MusicalKey>
 
     init {
         val database = ChordTrainDatabase.getDatabase(application)
         musicalKeyDao = database.musicalKeyDao()
         allMusicalKeys = musicalKeyDao.getAllMusicalKey()
-        selectedMusicalKey = MutableLiveData(allMusicalKeys.value?.get(0)?.name ?: "C major")
+        selectedMusicalKey = MutableLiveData(allMusicalKeys.value?.get(0))
     }
 }

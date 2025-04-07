@@ -27,22 +27,12 @@ class PlayFragment: Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_play, container, false)
         val viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-        player = ChordPlayer(requireContext(), ChordSequenceGenerator(requireContext()))
+        val chordSequenceGenerator = ChordSequenceGenerator(requireContext(), viewModel.selectedDifficulty.value!!, viewModel.selectedMusicalKey.value!!, viewModel.selectedLength.value!!)
+        player = ChordPlayer(requireContext(), chordSequenceGenerator)
 
         val playButton: Button = view.findViewById(R.id.play_button)
         playButton.setOnClickListener {
             player.play()
-        }
-
-        val settings: TextView = view.findViewById(R.id.sth)
-        viewModel.selectedMusicalKey.observe(viewLifecycleOwner) { newKey ->
-            settings.text = "settings: $${viewModel.selectedLength.value} ${viewModel.selectedDifficulty.value} chords in ${newKey}"
-        }
-        viewModel.selectedDifficulty.observe(viewLifecycleOwner) { newDiff ->
-            settings.text = "settings: $${viewModel.selectedLength.value} $newDiff chords in ${viewModel.selectedMusicalKey.value}"
-        }
-        viewModel.selectedLength.observe(viewLifecycleOwner) { newLength ->
-            settings.text = "settings: $newLength ${viewModel.selectedDifficulty.value} chords in ${viewModel.selectedMusicalKey.value}"
         }
 
         return  view
