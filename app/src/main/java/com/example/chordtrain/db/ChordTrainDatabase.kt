@@ -158,7 +158,7 @@ abstract class ChordTrainDatabase : RoomDatabase() {
                                 musicalKey.forEach { musicalKeyDao.insert(it) }
                             }
                         }
-                    }).fallbackToDestructiveMigration()
+                    })
                     .build()
                 INSTANCE = instance
                 instance
