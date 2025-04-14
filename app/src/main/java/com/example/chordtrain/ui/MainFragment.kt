@@ -26,7 +26,7 @@ class MainFragment: Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_main, container, false)
         val viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-
+    
 
         val keySpinner: Spinner = view.findViewById(R.id.chord_spinner)
         viewModel.allMusicalKeys.observe(viewLifecycleOwner) { keys ->

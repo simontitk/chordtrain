@@ -9,10 +9,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [MusicalKey::class], version = 1, exportSchema = false)
+@Database(
+    entities = [MusicalKey::class, Attempt::class, AttemptChord::class],  // Add new tables here
+    version = 2,
+    exportSchema = false
+)
 abstract class ChordTrainDatabase : RoomDatabase() {
-
     abstract fun musicalKeyDao(): MusicalKeyDao
+    abstract fun statisticsDao(): StatisticsDao
 
     companion object {
         @Volatile
@@ -154,7 +158,8 @@ abstract class ChordTrainDatabase : RoomDatabase() {
                                 musicalKey.forEach { musicalKeyDao.insert(it) }
                             }
                         }
-                    }).build()
+                    }).fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }
