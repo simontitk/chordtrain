@@ -26,7 +26,7 @@ class MainFragment: Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_main, container, false)
         val viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-
+    
 
         val keySpinner: Spinner = view.findViewById(R.id.chord_spinner)
         viewModel.allMusicalKeys.observe(viewLifecycleOwner) { keys ->
@@ -98,6 +98,14 @@ class MainFragment: Fragment() {
                 findNavController().navigate(R.id.action_main_to_play)
             }
         }
+
+        val statisticsButton: Button = view.findViewById(R.id.stats_fragment_button)
+        statisticsButton.setOnClickListener {
+           activity?.let {
+               findNavController().navigate(R.id.action_main_to_statistics)
+           }
+        }
+
         return view
     }
 }

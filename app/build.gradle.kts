@@ -46,6 +46,8 @@ dependencies {
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.exoplayer.dash)
     implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.room.common.jvm)
+    implementation(libs.androidx.recyclerview)
     val roomVersion = "2.6.1" // Use the latest version
     implementation("androidx.room:room-runtime:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion") // Use ksp instead of kapt
