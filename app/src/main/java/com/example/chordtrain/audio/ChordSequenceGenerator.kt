@@ -8,33 +8,13 @@ import com.example.chordtrain.db.MusicalKey
 
 
 class ChordSequenceGenerator(
-    private val context: Context,
     private val musicalKey: MusicalKey,
     private val difficulty: String,
     private val sequenceLength: Int
 ) {
 
-    private fun rawResourceUri(@RawRes resId: Int): Uri {
-        return Uri.parse("android.resource://${context.packageName}/$resId")
-    }
 
-
-    private fun getChordId(chordName: String): Int {
-        val normalizedChordName = chordName
-            .lowercase()
-            .replace(" ", "_")
-            .replace("#", "_sharp")
-
-        val id = context.resources.getIdentifier(normalizedChordName, "raw", context.packageName)
-
-        if (id == 0) {
-            Log.e("ChordDebug", "Resource not found after normalization: $normalizedChordName")
-        }
-        return id
-    }
-
-
-    fun getChordSequence(): List<Uri> {
+    fun getChordSequence(): List<String> {
         val chordNames = mutableListOf(musicalKey.chord1, musicalKey.chord4, musicalKey.chord5)
 
         if (difficulty == "Medium") {
@@ -55,6 +35,6 @@ class ChordSequenceGenerator(
             randomChords.add(chordNames.random())
         }
 
-        return randomChords.map { rawResourceUri(getChordId(it)) }
+        return randomChords
     }
 }
