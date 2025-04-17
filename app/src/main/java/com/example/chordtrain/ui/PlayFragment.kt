@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.util.UnstableApi
-import com.example.chordtrain.MainViewModel
-import com.example.chordtrain.PlayViewModel
-import com.example.chordtrain.PlayViewModelFactory
+import com.example.chordtrain.viewmodels.MainViewModel
+import com.example.chordtrain.viewmodels.PlayViewModel
+import com.example.chordtrain.viewmodels.PlayViewModelFactory
 import com.example.chordtrain.R
 import com.example.chordtrain.audio.ChordPlayer
 

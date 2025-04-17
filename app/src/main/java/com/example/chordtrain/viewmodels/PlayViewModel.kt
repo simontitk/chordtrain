@@ -1,4 +1,4 @@
-package com.example.chordtrain
+package com.example.chordtrain.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

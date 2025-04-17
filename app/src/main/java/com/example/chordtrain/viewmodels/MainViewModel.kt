@@ -1,4 +1,4 @@
-package com.example.chordtrain
+package com.example.chordtrain.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
