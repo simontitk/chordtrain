@@ -23,4 +23,7 @@ interface AttemptDao {
         insertAttemptChords(chordsWithAttemptId)
         return attemptId
     }
+
+    @Query("SELECT * FROM attempt ORDER by attemptId")
+    fun getAllAttempts(): LiveData<List<AttemptWithChords>>
 }

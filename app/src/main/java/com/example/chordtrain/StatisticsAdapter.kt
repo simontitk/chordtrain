@@ -5,13 +5,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.chordtrain.db.AttemptWithChords
 
-class StatisticsAdapter(private val attempts: List<AttemptDisplayData>) :
+class StatisticsAdapter() :
     RecyclerView.Adapter<StatisticsAdapter.AttemptViewHolder>() {
 
+    private var attempts = listOf<AttemptWithChords>()
+
     inner class AttemptViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val attemptInfo: TextView = itemView.findViewById(R.id.attempt_info_text)
-        val attemptScore: TextView = itemView.findViewById(R.id.attempt_score_text)
+        fun bind(attempt: AttemptWithChords) {
+            itemView.findViewById<TextView>(R.id.attempt_info_text).text = "Attempt #${attempt.attempt.attemptId} — ${attempt.attempt.key}, ${attempt.attempt.difficulty}, Length ${attempt.chords.size}"
+            itemView.findViewById<TextView>(R.id.attempt_score_text).text = "Score: ${attempt.chords.size}/${attempt.chords.size}"
+
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttemptViewHolder {
@@ -21,10 +27,16 @@ class StatisticsAdapter(private val attempts: List<AttemptDisplayData>) :
     }
 
     override fun onBindViewHolder(holder: AttemptViewHolder, position: Int) {
-        val attempt = attempts[position]
-        holder.attemptInfo.text = "Attempt #${attempt.attemptId} — ${attempt.key}, ${attempt.difficulty}, Length ${attempt.length}"
-        holder.attemptScore.text = "Score: ${attempt.correctCount}/${attempt.totalChords}"
+        holder.bind(attempts[position])
+
     }
 
     override fun getItemCount(): Int = attempts.size
+
+    fun setAttempts(newAttempts: List<AttemptWithChords>) {
+        attempts = newAttempts
+        notifyDataSetChanged()
+    }
+
+
 }
