@@ -14,6 +14,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:id="@+id/answer_spinner_container"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/play_button"
+        app:layout_constraintBottom_toTopOf="@id/check_answer_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/check_answer_button"
         android:layout_height="wrap_content"
@@ -21,7 +31,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/play_button"  android:layout_width="match_parent"/>
+        app:layout_constraintTop_toTopOf="@id/answer_spinner_container"
+        android:layout_width="match_parent"/>
 
     <Button
         android:id="@+id/skip_sequence_button"
