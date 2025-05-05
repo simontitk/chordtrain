@@ -21,7 +21,7 @@ class PlayViewModel(
         return generator.getPossibleChords()
     }
 
-    fun checkAnswer(answerChordSequence: List<String>): Pair<Attempt, List<AttemptChord>> {
+    fun checkAnswer(answerChordSequence: List<String>): Triple<String, Attempt, List<AttemptChord>> {
         val attempt = Attempt(
             difficulty=selectedDifficulty,
             key=selectedMusicalKey.name,
@@ -33,11 +33,11 @@ class PlayViewModel(
             attemptChords.add(attemptChord)
         }
         hasAnswered.value = true
-
-        return Pair(attempt, attemptChords)
+        val result = getResult((attemptChords))
+        return Triple(result, attempt, attemptChords)
     }
 
-    fun skipSequence(): Pair<Attempt, List<AttemptChord>> {
+    fun skipSequence(): Triple<String, Attempt, List<AttemptChord>> {
         val attempt = Attempt(
             difficulty=selectedDifficulty,
             key=selectedMusicalKey.name,
@@ -49,8 +49,18 @@ class PlayViewModel(
             attemptChords.add(attemptChord)
         }
         generateNextSequence()
-        return Pair(attempt, attemptChords)
+        return Triple("failure", attempt, attemptChords)
 
+    }
+
+    private fun getResult(attemptChord: List<AttemptChord>): String {
+        if (attemptChord.all { it.hit }) {
+            return "success"
+        }
+        else if (attemptChord.none { it.hit }) {
+            return "failure"
+        }
+        return "mixed"
     }
 
     fun generateNextSequence() {
