@@ -36,8 +36,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
 
     fun addAttempt(attempt: Attempt, attemptChords: List<AttemptChord>) {
         viewModelScope.launch {
-            val attemptId = attemptDao.insertAttemptWithChords(attempt, attemptChords)
-            println("added stuff for $attemptId")
+            attemptDao.insertAttemptWithChords(attempt, attemptChords)
         }
     }
 }

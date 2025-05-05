@@ -72,7 +72,8 @@ class PlayFragment: Fragment() {
         val skipSequenceButton: Button = view.findViewById(R.id.skip_sequence_button)
         skipSequenceButton.setOnClickListener {
             player.stop()
-            playViewModel.skipSequence()
+            val (attempt, attemptChords) = playViewModel.skipSequence()
+            mainViewModel.addAttempt(attempt, attemptChords)
         }
 
         val nextSequenceButton: Button = view.findViewById(R.id.next_sequence_button)
