@@ -13,7 +13,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.chordtrain.MainViewModel
+import com.example.chordtrain.viewmodels.MainViewModel
 import com.example.chordtrain.R
 
 class MainFragment: Fragment() {

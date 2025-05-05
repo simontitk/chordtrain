@@ -1,6 +1,8 @@
 package com.example.chordtrain.audio
 
 import android.content.Context
+import android.net.Uri
+import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
@@ -9,29 +11,29 @@ import androidx.media3.exoplayer.source.ConcatenatingMediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 
 @UnstableApi
-class ChordPlayer(context: Context, generator: ChordSequenceGenerator) {
+class ChordPlayer(private val context: Context) {
     private val player: ExoPlayer = ExoPlayer.Builder(context).build()
-    private var sourceSequence: ConcatenatingMediaSource
+    private val chordResourceLoader = ChordResourceLoader(context)
 
-    init {
+@OptIn(UnstableApi::class)
+fun play(chords: List<String>) {
         val dataFactory = DefaultDataSource.Factory(context)
         val mediaFactory = ProgressiveMediaSource.Factory(dataFactory)
         val concatSource = ConcatenatingMediaSource()
-        val chords = generator.getChordSequence()
 
         chords.forEach {
-            val mediaSource = mediaFactory.createMediaSource(MediaItem.fromUri(it))
+            val chordUri = chordResourceLoader.getChordUri(it)
+            val mediaSource = mediaFactory.createMediaSource(MediaItem.fromUri(chordUri))
             concatSource.addMediaSource(mediaSource)
         }
 
-        player.volume = 0.4f
-        sourceSequence = concatSource
-    }
-
-    fun play() {
-        player.setMediaSource(sourceSequence)
+        player.setMediaSource(concatSource)
         player.prepare()
         player.playWhenReady = true
+    }
+
+    fun stop() {
+        player.stop()
     }
 
     fun release() {
