@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 abstract class ChordTrainDatabase : RoomDatabase() {
     abstract fun musicalKeyDao(): MusicalKeyDao
     abstract fun statisticsDao(): StatisticsDao
+    abstract fun attemptDao(): AttemptDao
 
     companion object {
         @Volatile
@@ -158,7 +159,7 @@ abstract class ChordTrainDatabase : RoomDatabase() {
                                 musicalKey.forEach { musicalKeyDao.insert(it) }
                             }
                         }
-                    })
+                    }).fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance
