@@ -3,6 +3,8 @@ package com.example.chordtrain.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.chordtrain.audio.ChordSequenceGenerator
+import com.example.chordtrain.db.Attempt
+import com.example.chordtrain.db.AttemptChord
 import com.example.chordtrain.db.MusicalKey
 
 class PlayViewModel(
@@ -13,13 +15,26 @@ class PlayViewModel(
 
     private val generator = ChordSequenceGenerator(selectedMusicalKey, selectedDifficulty, selectedLength)
     val hasAnswered = MutableLiveData(false)
-    var trueChordSequence = generator.getChordSequence()
+    var trueChordSequence = generator.getRandomChordSequence()
 
-    fun checkAnswer() {
+    fun getPossibleChords(): List<String>{
+        return generator.getPossibleChords()
+    }
 
+    fun checkAnswer(answerChordSequence: List<String>): Pair<Attempt, List<AttemptChord>> {
+        val attempt = Attempt(
+            difficulty=selectedDifficulty,
+            key=selectedMusicalKey.name,
+            length=selectedLength
+        )
+        val attemptChords = mutableListOf<AttemptChord>()
+        answerChordSequence.forEachIndexed { i, chord ->
+            val attemptChord = AttemptChord(chord=chord, hit=(chord == trueChordSequence[i]))
+            attemptChords.add(attemptChord)
+        }
         hasAnswered.value = true
-        // TODO: checking logic
-        // TODO: save record to database
+
+        return Pair(attempt, attemptChords)
     }
 
     fun skipSequence() {
@@ -29,7 +44,7 @@ class PlayViewModel(
 
     fun generateNextSequence() {
         hasAnswered.value = false
-        trueChordSequence = generator.getChordSequence()
+        trueChordSequence = generator.getRandomChordSequence()
     }
 
 }

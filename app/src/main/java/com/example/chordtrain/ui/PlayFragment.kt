@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.util.UnstableApi
@@ -43,10 +46,27 @@ class PlayFragment: Fragment() {
             player.play(playViewModel.trueChordSequence)
         }
 
+        val spinnerContainer: LinearLayout = view.findViewById(R.id.answer_spinner_container)
+        val spinnerList = mutableListOf<Spinner>()
+
+        repeat(mainViewModel.selectedLength.value ?: 0) {
+            val spinner = Spinner(requireContext())
+            val adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.custom_spinner,
+                playViewModel.getPossibleChords())
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+
+            spinnerContainer.addView(spinner)
+            spinnerList.add(spinner)
+        }
+
         val checkButton: Button = view.findViewById(R.id.check_answer_button)
         checkButton.setOnClickListener {
             player.stop()
-            playViewModel.checkAnswer()
+            val (attempt, attemptChords) = playViewModel.checkAnswer(spinnerList.map { it.selectedItem.toString() })
+            mainViewModel.addAttempt(attempt, attemptChords)
         }
 
         val skipSequenceButton: Button = view.findViewById(R.id.skip_sequence_button)
