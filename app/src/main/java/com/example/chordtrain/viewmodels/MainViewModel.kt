@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.chordtrain.db.Attempt
 import com.example.chordtrain.db.AttemptChord
 import com.example.chordtrain.db.AttemptDao
+import com.example.chordtrain.db.AttemptWithChords
 import com.example.chordtrain.db.ChordTrainDatabase
 import com.example.chordtrain.db.MusicalKey
 import com.example.chordtrain.db.MusicalKeyDao
@@ -19,6 +20,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     private val musicalKeyDao: MusicalKeyDao
     private val attemptDao: AttemptDao
     val allMusicalKeys: LiveData<List<MusicalKey>>
+    val allAttempts: LiveData<List<AttemptWithChords>>
     val selectedLength = MutableLiveData<Int>(1)
     val selectedDifficulty = MutableLiveData<String>("Easy")
     val selectedMusicalKey: MutableLiveData<MusicalKey>
@@ -28,6 +30,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         musicalKeyDao = database.musicalKeyDao()
         attemptDao = database.attemptDao()
         allMusicalKeys = musicalKeyDao.getAllMusicalKey()
+        allAttempts = attemptDao.getAllAttempts()
         selectedMusicalKey = MutableLiveData(allMusicalKeys.value?.get(0))
     }
 

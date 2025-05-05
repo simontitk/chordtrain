@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.chordtrain.AttemptDisplayData
 import com.example.chordtrain.R
 import com.example.chordtrain.StatisticsAdapter
+import com.example.chordtrain.viewmodels.MainViewModel
 
 class StatisticsFragment : Fragment() {
 
@@ -18,20 +19,21 @@ class StatisticsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_statistics, container, false)
+        return inflater.inflate(R.layout.fragment_statistics, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.attempts_recycler_view)
+        val adapter = StatisticsAdapter()
+        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // 🔹 Mock data
-        val mockData = listOf(
-            AttemptDisplayData(1, "C Major", "Easy", 3, 2, 3),
-            AttemptDisplayData(2, "G Major", "Medium", 4, 3, 4),
-            AttemptDisplayData(3, "A Minor", "Hard", 2, 1, 2)
-        )
-
-        recyclerView.adapter = StatisticsAdapter(mockData)
-
-        return view
+        mainViewModel.allAttempts.observe(viewLifecycleOwner) { attempts ->
+            adapter.setAttempts(attempts)
+        }
     }
 }

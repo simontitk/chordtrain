@@ -2,22 +2,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
+    android:padding="15dp"
     android:orientation="vertical"
     android:background="?attr/selectableItemBackground">
 
-    <TextView
-        android:id="@+id/attempt_info_text"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Attempt info"
-        android:textStyle="bold"
-        android:textSize="16sp"/>
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Key:"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/attempt_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Difficulty:"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/attempt_difficulty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Score:"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/attempt_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/attempt_score_text"
+    <LinearLayout
+        android:id="@+id/attempt_chords_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Score"
-        android:textSize="14sp"/>
+        android:layout_height="30dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC" />
 </LinearLayout>
