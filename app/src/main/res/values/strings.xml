@@ -10,4 +10,8 @@
     <string name="start">Start</string>
     <string name="stats">Stats</string>
     <string name="statistics">Statistics</string>
+    <string name="play">Playback</string>
+    <string name="check">Check</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
 </resources>

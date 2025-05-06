@@ -2,9 +2,10 @@
     android:id="@+id/spinner_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:paddingStart="0dp"
     android:paddingEnd="0dp"
-    android:textSize="13sp"
+    android:textSize="15sp"
     android:gravity="center_vertical"
-    android:singleLine="true"
+    android:singleLine="false"
     android:ellipsize="end" />
