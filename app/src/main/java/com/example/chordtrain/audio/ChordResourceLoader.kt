@@ -12,6 +12,7 @@ class ChordResourceLoader(private val context: Context) {
             .lowercase()
             .replace(" ", "_")
             .replace("#", "_sharp")
+            .replace("b", "_flat")
 
         val id = context.resources.getIdentifier(normalizedChordName, "raw", context.packageName)
 
