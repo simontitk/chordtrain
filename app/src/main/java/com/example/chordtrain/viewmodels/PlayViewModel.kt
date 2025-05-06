@@ -6,6 +6,7 @@ import com.example.chordtrain.audio.ChordSequenceGenerator
 import com.example.chordtrain.db.Attempt
 import com.example.chordtrain.db.AttemptChord
 import com.example.chordtrain.db.MusicalKey
+import com.example.chordtrain.enums.PlayResult
 
 class PlayViewModel(
     private val selectedLength: Int,
@@ -21,7 +22,7 @@ class PlayViewModel(
         return generator.getPossibleChords()
     }
 
-    fun checkAnswer(answerChordSequence: List<String>): Triple<String, Attempt, List<AttemptChord>> {
+    fun checkAnswer(answerChordSequence: List<String>): Triple<PlayResult, Attempt, List<AttemptChord>> {
         val attempt = Attempt(
             difficulty=selectedDifficulty,
             key=selectedMusicalKey.name,
@@ -37,7 +38,7 @@ class PlayViewModel(
         return Triple(result, attempt, attemptChords)
     }
 
-    fun skipSequence(): Triple<String, Attempt, List<AttemptChord>> {
+    fun skipSequence(): Triple<PlayResult, Attempt, List<AttemptChord>> {
         val attempt = Attempt(
             difficulty=selectedDifficulty,
             key=selectedMusicalKey.name,
@@ -49,18 +50,18 @@ class PlayViewModel(
             attemptChords.add(attemptChord)
         }
         generateNextSequence()
-        return Triple("failure", attempt, attemptChords)
+        return Triple(PlayResult.FAILURE, attempt, attemptChords)
 
     }
 
-    private fun getResult(attemptChord: List<AttemptChord>): String {
+    private fun getResult(attemptChord: List<AttemptChord>): PlayResult {
         if (attemptChord.all { it.hit }) {
-            return "success"
+            return PlayResult.SUCCESS
         }
         else if (attemptChord.none { it.hit }) {
-            return "failure"
+            return PlayResult.FAILURE
         }
-        return "mixed"
+        return PlayResult.MIXED
     }
 
     fun generateNextSequence() {

@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.util.UnstableApi
@@ -19,6 +20,7 @@ import com.example.chordtrain.viewmodels.PlayViewModel
 import com.example.chordtrain.viewmodels.PlayViewModelFactory
 import com.example.chordtrain.R
 import com.example.chordtrain.audio.ChordPlayer
+import com.example.chordtrain.enums.PlayResult
 
 @UnstableApi
 class PlayFragment: Fragment() {
@@ -52,7 +54,16 @@ class PlayFragment: Fragment() {
         val spinnerContainer: LinearLayout = view.findViewById(R.id.answer_spinner_container)
         val spinnerList = mutableListOf<Spinner>()
 
-        repeat(mainViewModel.selectedLength.value ?: 0) {
+        repeat(mainViewModel.selectedLength.value ?: 0) { i ->
+
+            val row = LinearLayout(requireContext()).apply {
+                orientation = LinearLayout.HORIZONTAL
+                setPadding(0, 8, 0, 8)
+            }
+            val label = TextView(requireContext()).apply {
+                text = "Chord ${i+1}: "
+                textSize = 18f
+            }
             val spinner = Spinner(requireContext())
             val adapter = ArrayAdapter(
                 requireContext(),
@@ -61,7 +72,9 @@ class PlayFragment: Fragment() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
 
-            spinnerContainer.addView(spinner)
+            row.addView(label)
+            row.addView(spinner)
+            spinnerContainer.addView(row)
             spinnerList.add(spinner)
         }
 
@@ -88,31 +101,43 @@ class PlayFragment: Fragment() {
         }
 
         playViewModel.hasAnswered.observe(viewLifecycleOwner) { hasAnswered ->
-            checkButton.isEnabled = !hasAnswered
-            skipSequenceButton.isEnabled = !hasAnswered
-            nextSequenceButton.isEnabled = hasAnswered
+            setButtonState(checkButton, !hasAnswered)
+            setButtonState(skipSequenceButton, !hasAnswered)
+            setButtonState(nextSequenceButton, hasAnswered)
         }
     }
 
-    private fun runAnimation(result: String) {
+    private fun runAnimation(result: PlayResult) {
         val displayMetrics = DisplayMetrics()
         requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
         val screenWidth = displayMetrics.widthPixels
         val imageView = view?.findViewById<ImageView>(R.id.animated_image)
 
         val image = when (result) {
-            "success" -> R.drawable.train_green
-            "mixed" -> R.drawable.train_yellow
-            "failure" -> R.drawable.train_red
-             else -> R.drawable.chordtrain_icon
+            PlayResult.SUCCESS -> R.drawable.train_green
+            PlayResult.MIXED -> R.drawable.train_yellow
+            PlayResult.FAILURE -> R.drawable.train_red
         }
+
         imageView?.setImageResource(image)
 
         val offScreenLeft = ((imageView?.width ?: 10000) * -1).toFloat()
-        val offScreenRight = screenWidth.toFloat()
+        val offScreenRight = 2 * screenWidth.toFloat()
         val animation = ObjectAnimator.ofFloat(imageView, "translationX", offScreenLeft, offScreenRight)
         animation.duration = 1500
         animation.start()
+    }
+
+    private fun setButtonState(button: Button, active: Boolean) {
+        if (active) {
+            button.isEnabled = true
+            button.alpha = 1f
+            button.isClickable = true
+        } else {
+            button.isEnabled = false
+            button.alpha = 0.5f
+            button.isClickable = false
+        }
     }
 
     override fun onDestroy() {
