@@ -1,11 +1,14 @@
 package com.example.chordtrain.ui
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
@@ -65,14 +68,17 @@ class PlayFragment: Fragment() {
         val checkButton: Button = view.findViewById(R.id.check_answer_button)
         checkButton.setOnClickListener {
             player.stop()
-            val (attempt, attemptChords) = playViewModel.checkAnswer(spinnerList.map { it.selectedItem.toString() })
+            val (result, attempt, attemptChords) = playViewModel.checkAnswer(spinnerList.map { it.selectedItem.toString() })
+            runAnimation(result)
             mainViewModel.addAttempt(attempt, attemptChords)
         }
 
         val skipSequenceButton: Button = view.findViewById(R.id.skip_sequence_button)
         skipSequenceButton.setOnClickListener {
             player.stop()
-            playViewModel.skipSequence()
+            val (result, attempt, attemptChords) = playViewModel.skipSequence()
+            runAnimation(result)
+            mainViewModel.addAttempt(attempt, attemptChords)
         }
 
         val nextSequenceButton: Button = view.findViewById(R.id.next_sequence_button)
@@ -87,6 +93,28 @@ class PlayFragment: Fragment() {
             nextSequenceButton.isEnabled = hasAnswered
         }
     }
+
+    private fun runAnimation(result: String) {
+        val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val screenWidth = displayMetrics.widthPixels
+        val imageView = view?.findViewById<ImageView>(R.id.animated_image)
+
+        val image = when (result) {
+            "success" -> R.drawable.train_green
+            "mixed" -> R.drawable.train_yellow
+            "failure" -> R.drawable.train_red
+             else -> R.drawable.chordtrain_icon
+        }
+        imageView?.setImageResource(image)
+
+        val offScreenLeft = ((imageView?.width ?: 10000) * -1).toFloat()
+        val offScreenRight = screenWidth.toFloat()
+        val animation = ObjectAnimator.ofFloat(imageView, "translationX", offScreenLeft, offScreenRight)
+        animation.duration = 1500
+        animation.start()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         player.release()
