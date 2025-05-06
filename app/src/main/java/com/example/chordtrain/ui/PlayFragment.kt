@@ -20,6 +20,7 @@ import com.example.chordtrain.viewmodels.PlayViewModel
 import com.example.chordtrain.viewmodels.PlayViewModelFactory
 import com.example.chordtrain.R
 import com.example.chordtrain.audio.ChordPlayer
+import com.example.chordtrain.enums.PlayResult
 
 @UnstableApi
 class PlayFragment: Fragment() {
@@ -106,18 +107,18 @@ class PlayFragment: Fragment() {
         }
     }
 
-    private fun runAnimation(result: String) {
+    private fun runAnimation(result: PlayResult) {
         val displayMetrics = DisplayMetrics()
         requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
         val screenWidth = displayMetrics.widthPixels
         val imageView = view?.findViewById<ImageView>(R.id.animated_image)
 
         val image = when (result) {
-            "success" -> R.drawable.train_green
-            "mixed" -> R.drawable.train_yellow
-            "failure" -> R.drawable.train_red
-             else -> R.drawable.chordtrain_icon
+            PlayResult.SUCCESS -> R.drawable.train_green
+            PlayResult.MIXED -> R.drawable.train_yellow
+            PlayResult.FAILURE -> R.drawable.train_red
         }
+
         imageView?.setImageResource(image)
 
         val offScreenLeft = ((imageView?.width ?: 10000) * -1).toFloat()
