@@ -26,6 +26,7 @@ class StatisticsAdapter() :
             itemView.findViewById<TextView>(R.id.attempt_score).text = "$score / ${attempt.chords.size}"
 
             val attemptChordsContainer = itemView.findViewById<LinearLayout>(R.id.attempt_chords_container)
+            attemptChordsContainer.removeAllViews()
             attempt.chords.forEach { chordAttempt ->
                 val chordView = TextView(itemView.context).apply {
                     text = chordAttempt.chord
